@@ -1,0 +1,24 @@
+name: DIY Project
+description: Document a build or tutorial
+labels: ["diy"]
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      placeholder: Build a smart planter with a $10 sensor
+  - type: textarea
+    id: steps
+    attributes:
+      label: Project details
+      description: Include steps, parts list, code snippets, and photos (drag-and-drop). Markdown supported.
+      placeholder: |
+        ## Parts
+        - ...
+
+        ## Steps
+        1. ...
+        2. ...
+
+        ## Notes
+        - ...

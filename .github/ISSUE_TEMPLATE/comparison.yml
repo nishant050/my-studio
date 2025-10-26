@@ -1,0 +1,14 @@
+name: Comparison (Before/After)
+description: Compare two images with a slider
+labels: ["comparison"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Attach exactly two images below (the first is "Before", the second is "After").
+        Tip: drag-and-drop them in order; you’ll see a live slider on the site.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      placeholder: What changed? Any interesting details?

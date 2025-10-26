@@ -1,0 +1,13 @@
+name: AI Creation
+description: Post your AI-generated images
+labels: ["creation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Drag and drop one or more images below. Add a caption or prompt if you like.
+  - type: textarea
+    id: content
+    attributes:
+      label: Caption / notes
+      placeholder: Model, prompt, settings...

@@ -1,0 +1,16 @@
+name: Thought
+description: Share a short thought or note (Markdown supported)
+labels: ["thought"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Write your thought below. You can drag and drop images into this box.
+  - type: textarea
+    id: content
+    attributes:
+      label: Your thought
+      description: Markdown supported. Use headings, lists, links, etc.
+      placeholder: Today I learned that...
+    validations:
+      required: true
