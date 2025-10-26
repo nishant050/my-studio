@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Creative Space</title>
+    <title>My Creative Portfolio</title>
     <style>
         * {
             margin: 0;
@@ -12,477 +12,239 @@
         }
 
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --dark: #1a202c;
-            --light: #f7fafc;
-            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #2d3748;
+            --text-light: #718096;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient);
             min-height: 100vh;
-            color: var(--dark);
+            padding: 20px;
+            background-attachment: fixed;
         }
 
-        /* Loading Screen */
-        .loader {
+        /* Animated Background */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
-        }
-
-        .loader.hidden {
-            opacity: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="g"><stop offset="0%" stop-color="%23667eea" stop-opacity="0.1"/><stop offset="100%" stop-color="%23764ba2" stop-opacity="0.1"/></linearGradient></defs><circle cx="200" cy="200" r="300" fill="url(%23g)"/><circle cx="1000" cy="600" r="400" fill="url(%23g)"/></svg>');
             pointer-events: none;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
         }
 
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
         }
 
         /* Header */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--card-shadow);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        /* Admin Button */
-        .admin-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-
-        .admin-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 2rem 2rem;
-        }
-
-        /* Hero Section */
-        .hero {
             text-align: center;
-            padding: 4rem 0;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s;
+        }
+
+        h1 {
+            font-size: 3.5em;
             color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 0.8s;
+        .tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3em;
+            font-weight: 300;
         }
 
-        .hero p {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            animation: fadeInUp 0.8s 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Filter Tabs */
-        .filter-tabs {
+        /* Filter Pills */
+        .filters {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin: 3rem 0;
+            gap: 15px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
+            animation: fadeInUp 1s 0.2s both;
         }
 
-        .filter-tab {
-            background: white;
-            border: 2px solid transparent;
-            padding: 0.75rem 2rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .filter-tab:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--card-shadow);
-        }
-
-        .filter-tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .filter-btn {
+            padding: 12px 30px;
+            border: 2px solid white;
+            background: rgba(255,255,255,0.1);
             color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
         }
 
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        /* Content Card */
-        .content-card {
+        .filter-btn:hover, .filter-btn.active {
             background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Masonry Grid */
+        .grid {
+            columns: 350px 3;
+            column-gap: 20px;
+            animation: fadeIn 1s 0.4s both;
+        }
+
+        /* Cards */
+        .card {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.3s;
-            animation: fadeIn 0.5s;
+            animation: slideUp 0.6s both;
+            backdrop-filter: blur(10px);
         }
 
-        .content-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .card.hidden {
+            display: none;
+        }
+
+        /* Card Image Container */
+        .card-image-container {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         .card-image {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            display: block;
             transition: transform 0.3s;
         }
 
-        .content-card:hover .card-image {
-            transform: scale(1.05);
+        .card:hover .card-image {
+            transform: scale(1.1);
         }
 
-        .card-body {
-            padding: 1.5rem;
+        /* Comparison Slider for Before/After */
+        .comparison-container {
+            position: relative;
+            overflow: hidden;
+            cursor: col-resize;
+        }
+
+        .comparison-before,
+        .comparison-after {
+            width: 100%;
+            display: block;
+        }
+
+        .comparison-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            overflow: hidden;
+        }
+
+        .comparison-slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: white;
+            cursor: col-resize;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .comparison-slider::before {
+            content: '◀ ▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 25px;
         }
 
         .card-category {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 5px 15px;
+            background: var(--gradient);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.875rem;
+            border-radius: 20px;
+            font-size: 0.85em;
             font-weight: 600;
-            margin-bottom: 0.75rem;
+            margin-bottom: 15px;
         }
 
         .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
+            color: var(--text-dark);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .card-date {
-            color: #718096;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-bottom: 15px;
         }
 
         .card-description {
-            color: #4a5568;
+            color: var(--text-dark);
             line-height: 1.6;
-            margin-bottom: 1rem;
+            font-size: 1.05em;
         }
 
-        .card-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .comparison-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 900px;
-            width: 100%;
-            margin: 2rem auto;
-            animation: slideIn 0.3s;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            padding: 2rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #718096;
-            transition: color 0.3s;
-        }
-
-        .close-modal:hover {
-            color: var(--dark);
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .admin-section {
-            margin-bottom: 2rem;
-        }
-
-        .admin-section h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: var(--dark);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* GitHub Token Setup */
-        .token-setup {
-            background: #f7fafc;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .token-setup h4 {
-            margin-bottom: 1rem;
-        }
-
-        .token-info {
-            background: #edf2f7;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            line-height: 1.6;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                display: none;
-            }
-        }
-
-        /* Image Lightbox */
+        /* Lightbox */
         .lightbox {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 3000;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
             cursor: pointer;
+            animation: fadeIn 0.3s;
         }
 
         .lightbox.active {
             display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .lightbox img {
@@ -492,526 +254,385 @@
             animation: zoomIn 0.3s;
         }
 
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            box-shadow: var(--card-shadow);
-            transform: translateX(400px);
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
             transition: transform 0.3s;
-            z-index: 4000;
         }
 
-        .toast.show {
-            transform: translateX(0);
+        .lightbox-close:hover {
+            transform: rotate(90deg);
         }
 
-        .toast.success {
-            border-left: 4px solid #48bb78;
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .toast.error {
-            border-left: 4px solid #f56565;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 50px 0;
+            animation: fadeIn 1s 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .tagline { font-size: 1em; }
+            .grid { columns: 1; }
+            .stats { flex-direction: column; gap: 20px; }
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            padding: 50px;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .fab::before {
+            content: '↑';
+            font-size: 24px;
+            color: #667eea;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
-    </div>
-
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">My Creative Space</div>
-            <ul class="nav-links">
-                <li><a onclick="filterContent('all')">All</a></li>
-                <li><a onclick="filterContent('thoughts')">Thoughts</a></li>
-                <li><a onclick="filterContent('ai-art')">AI Art</a></li>
-                <li><a onclick="filterContent('comparisons')">Comparisons</a></li>
-                <li><a onclick="filterContent('diy')">DIY Projects</a></li>
-            </ul>
-            <button class="admin-btn" onclick="openAdminPanel()">Admin</button>
-        </nav>
-    </header>
-
-    <!-- Main Container -->
     <div class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 id="heroTitle">Welcome to My Creative Universe</h1>
-            <p id="heroDescription">Exploring the intersection of AI, art, and creativity</p>
-        </section>
+        <header>
+            <h1>✨ My Creative Space ✨</h1>
+            <p class="tagline">AI Art • Thoughts • Experiments • DIY Projects</p>
+        </header>
 
-        <!-- Filter Tabs -->
-        <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterContent('all')">All</button>
-            <button class="filter-tab" onclick="filterContent('thoughts')">Thoughts</button>
-            <button class="filter-tab" onclick="filterContent('ai-art')">AI Art</button>
-            <button class="filter-tab" onclick="filterContent('comparisons')">Comparisons</button>
-            <button class="filter-tab" onclick="filterContent('diy')">DIY Projects</button>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterItems('all')">All</button>
+            <button class="filter-btn" onclick="filterItems('thought')">💭 Thoughts</button>
+            <button class="filter-btn" onclick="filterItems('ai-art')">🎨 AI Art</button>
+            <button class="filter-btn" onclick="filterItems('comparison')">🔄 Comparisons</button>
+            <button class="filter-btn" onclick="filterItems('diy')">🔧 DIY</button>
         </div>
 
-        <!-- Content Grid -->
-        <div class="content-grid" id="contentGrid">
-            <!-- Content will be dynamically loaded here -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="aiArtCount">0</div>
+                <div class="stat-label">AI Creations</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="diyCount">0</div>
+                <div class="stat-label">DIY Projects</div>
+            </div>
+        </div>
+
+        <div class="grid" id="contentGrid">
+            <div class="loading">Loading amazing content...</div>
         </div>
     </div>
 
-    <!-- Admin Modal -->
-    <div class="modal" id="adminModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Admin Panel</h2>
-                <button class="close-modal" onclick="closeAdminPanel()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="admin-panel">
-                    <!-- GitHub Token Setup -->
-                    <div class="token-setup">
-                        <h4>Setup GitHub Access</h4>
-                        <div class="token-info">
-                            To add content, you need a GitHub Personal Access Token:
-                            <ol>
-                                <li>Go to GitHub Settings → Developer settings → Personal access tokens</li>
-                                <li>Generate a new token with 'repo' scope</li>
-                                <li>Paste it below (stored locally in your browser)</li>
-                            </ol>
-                        </div>
-                        <div class="form-group">
-                            <label>GitHub Username</label>
-                            <input type="text" id="githubUsername" placeholder="your-github-username">
-                        </div>
-                        <div class="form-group">
-                            <label>Repository Name</label>
-                            <input type="text" id="repoName" placeholder="your-repo-name">
-                        </div>
-                        <div class="form-group">
-                            <label>GitHub Token</label>
-                            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-                        </div>
-                        <button class="btn btn-primary" onclick="saveGitHubConfig()">Save Configuration</button>
-                    </div>
-
-                    <!-- Add Content Form -->
-                    <div class="admin-section">
-                        <h3>Add New Content</h3>
-                        <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" id="contentTitle" placeholder="Enter title">
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="contentCategory">
-                                <option value="thoughts">Thoughts</option>
-                                <option value="ai-art">AI Art</option>
-                                <option value="comparisons">Comparisons</option>
-                                <option value="diy">DIY Projects</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Main Image URL</label>
-                            <input type="url" id="contentImage" placeholder="https://example.com/image.jpg">
-                        </div>
-                        <div class="form-group" id="comparisonImages" style="display: none;">
-                            <label>Before Image URL (for comparisons)</label>
-                            <input type="url" id="beforeImage" placeholder="https://example.com/before.jpg">
-                            <label style="margin-top: 1rem;">After Image URL (for comparisons)</label>
-                            <input type="url" id="afterImage" placeholder="https://example.com/after.jpg">
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="contentDescription" placeholder="Enter your content here..."></textarea>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-primary" onclick="addContent()">Add Content</button>
-                            <button class="btn btn-secondary" onclick="closeAdminPanel()">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Image Lightbox -->
+    <!-- Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <img id="lightboxImage" src="" alt="">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightboxImg" src="" alt="">
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
+    <!-- Scroll to top -->
+    <div class="fab" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"></div>
 
     <script>
-        // Global variables
-        let contentData = [];
+        // ============================================================
+        // 📝 ADD YOUR CONTENT HERE - SUPER EASY!
+        // ============================================================
+        // Just copy any item below and modify it. That's it!
+        // 
+        // For regular posts: use 'image'
+        // For before/after: use 'beforeImage' and 'afterImage'
+        // Categories: 'thought', 'ai-art', 'comparison', 'diy'
+        // ============================================================
+
+        const MY_CONTENT = [
+            // 🎨 AI Art Example
+            {
+                type: 'ai-art',
+                title: 'Dreamscape City',
+                date: 'Nov 15, 2024',
+                image: 'https://picsum.photos/400/500?random=1',
+                description: 'Created this futuristic cityscape using Midjourney. The prompt was "neon city floating in clouds at sunset".'
+            },
+            
+            // 💭 Thought Example
+            {
+                type: 'thought',
+                title: 'The Future of Creativity',
+                date: 'Nov 14, 2024',
+                image: 'https://picsum.photos/400/300?random=2',
+                description: 'Been thinking about how AI is changing the creative process. It\'s not replacing creativity, but amplifying it in ways we never imagined.'
+            },
+            
+            // 🔄 Comparison Example (Before/After)
+            {
+                type: 'comparison',
+                title: 'Classic Painting to Photo',
+                date: 'Nov 13, 2024',
+                beforeImage: 'https://picsum.photos/400/400?random=3',
+                afterImage: 'https://picsum.photos/400/400?random=4',
+                description: 'Transformed Van Gogh\'s Starry Night into a photorealistic scene using AI. The results are mind-blowing!'
+            },
+            
+            // 🔧 DIY Project Example
+            {
+                type: 'diy',
+                title: 'Smart Mirror Build',
+                date: 'Nov 12, 2024',
+                image: 'https://picsum.photos/400/600?random=5',
+                description: 'Built a smart mirror with Raspberry Pi that shows weather, calendar, and news. Total cost: $150. Tutorial coming soon!'
+            },
+            
+            // Add more AI art
+            {
+                type: 'ai-art',
+                title: 'Cyberpunk Portrait',
+                date: 'Nov 11, 2024',
+                image: 'https://picsum.photos/400/450?random=6',
+                description: 'Experimented with cyberpunk aesthetics. This portrait combines neon colors with traditional Japanese elements.'
+            },
+            
+            // Add another comparison
+            {
+                type: 'comparison',
+                title: 'Sketch to Reality',
+                date: 'Nov 10, 2024',
+                beforeImage: 'https://picsum.photos/400/350?random=7',
+                afterImage: 'https://picsum.photos/400/350?random=8',
+                description: 'Turned my rough sketch into a photorealistic landscape using Stable Diffusion.'
+            },
+            
+            // Another thought
+            {
+                type: 'thought',
+                title: 'Learning from Failure',
+                date: 'Nov 9, 2024',
+                image: 'https://picsum.photos/400/400?random=9',
+                description: 'Failed experiments teach us more than successful ones. Today\'s "mistake" became tomorrow\'s breakthrough technique.'
+            },
+            
+            // 
+            // 👇 ADD YOUR NEW CONTENT BELOW THIS LINE! 
+            // Just copy the format above and change the values
+            //
+            
+            
+            
+        ];
+
+        // ============================================================
+        // 🚀 WEBSITE FUNCTIONALITY (No need to edit below)
+        // ============================================================
+
         let currentFilter = 'all';
 
-        // Initialize
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
-            loadContent();
-            setupEventListeners();
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-            }, 1000);
+            renderContent();
+            updateStats();
         });
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Category change listener
-            document.getElementById('contentCategory').addEventListener('change', (e) => {
-                const comparisonImages = document.getElementById('comparisonImages');
-                if (e.target.value === 'comparisons') {
-                    comparisonImages.style.display = 'block';
-                } else {
-                    comparisonImages.style.display = 'none';
-                }
-            });
-        }
-
-        // Load content from localStorage or GitHub
-        async function loadContent() {
-            // First, try to load from localStorage
-            const savedContent = localStorage.getItem('siteContent');
-            if (savedContent) {
-                contentData = JSON.parse(savedContent);
-                renderContent();
-                return;
-            }
-
-            // If GitHub is configured, try to load from there
-            const config = getGitHubConfig();
-            if (config.username && config.repo && config.token) {
-                try {
-                    const response = await fetch(
-                        `https://api.github.com/repos/${config.username}/${config.repo}/contents/data.json`,
-                        {
-                            headers: {
-                                'Authorization': `token ${config.token}`,
-                                'Accept': 'application/vnd.github.v3+json'
-                            }
-                        }
-                    );
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        const content = JSON.parse(atob(data.content));
-                        contentData = content.posts || [];
-                        localStorage.setItem('siteContent', JSON.stringify(contentData));
-                        renderContent();
-                    } else {
-                        // Load default content
-                        loadDefaultContent();
-                    }
-                } catch (error) {
-                    console.error('Error loading from GitHub:', error);
-                    loadDefaultContent();
-                }
-            } else {
-                // Load default content
-                loadDefaultContent();
-            }
-        }
-
-        // Load default content
-        function loadDefaultContent() {
-            contentData = [
-                {
-                    id: Date.now(),
-                    title: "My First AI Artwork",
-                    category: "ai-art",
-                    image: "https://picsum.photos/400/300?random=1",
-                    description: "This is my first experiment with AI-generated art. The results are absolutely stunning!",
-                    date: new Date().toLocaleDateString()
-                },
-                {
-                    id: Date.now() + 1,
-                    title: "Thoughts on Creativity",
-                    category: "thoughts",
-                    image: "https://picsum.photos/400/300?random=2",
-                    description: "Creativity is not just about making something new, it's about seeing the world differently.",
-                    date: new Date().toLocaleDateString()
-                },
-                {
-                    id: Date.now() + 2,
-                    title: "Painting to Photo Transformation",
-                    category: "comparisons",
-                    image: "https://picsum.photos/400/300?random=3",
-                    beforeImage: "https://picsum.photos/400/300?random=4",
-                    afterImage: "https://picsum.photos/400/300?random=5",
-                    description: "Amazing transformation of a classical painting into a photorealistic image using AI.",
-                    date: new Date().toLocaleDateString()
-                },
-                {
-                    id: Date.now() + 3,
-                    title: "DIY Smart Mirror Project",
-                    category: "diy",
-                    image: "https://picsum.photos/400/300?random=6",
-                    description: "Built a smart mirror that displays weather, news, and calendar events. Here's how I did it!",
-                    date: new Date().toLocaleDateString()
-                }
-            ];
-            localStorage.setItem('siteContent', JSON.stringify(contentData));
-            renderContent();
-        }
-
-        // Render content
+        // Render all content
         function renderContent() {
             const grid = document.getElementById('contentGrid');
             grid.innerHTML = '';
-
-            const filteredContent = currentFilter === 'all' 
-                ? contentData 
-                : contentData.filter(item => item.category === currentFilter);
-
-            filteredContent.forEach(item => {
-                const card = createContentCard(item);
+            
+            MY_CONTENT.forEach((item, index) => {
+                const card = createCard(item, index);
                 grid.appendChild(card);
             });
         }
 
-        // Create content card
-        function createContentCard(item) {
+        // Create a card element
+        function createCard(item, index) {
             const card = document.createElement('div');
-            card.className = 'content-card';
+            card.className = 'card';
+            card.dataset.type = item.type;
+            card.style.animationDelay = `${index * 0.1}s`;
             
-            let comparisonHTML = '';
-            if (item.category === 'comparisons' && item.beforeImage && item.afterImage) {
-                comparisonHTML = `
-                    <div class="card-comparison">
-                        <img src="${item.beforeImage}" alt="Before" class="comparison-image" onclick="openLightbox('${item.beforeImage}')">
-                        <img src="${item.afterImage}" alt="After" class="comparison-image" onclick="openLightbox('${item.afterImage}')">
+            let imageHTML = '';
+            
+            if (item.beforeImage && item.afterImage) {
+                // Before/After comparison
+                imageHTML = `
+                    <div class="comparison-container" onmousemove="handleComparison(event, this)">
+                        <img src="${item.beforeImage}" class="comparison-before" alt="${item.title}">
+                        <div class="comparison-after" style="width: 50%;">
+                            <img src="${item.afterImage}" alt="${item.title}">
+                        </div>
+                        <div class="comparison-slider"></div>
+                    </div>
+                `;
+            } else {
+                // Regular image
+                imageHTML = `
+                    <div class="card-image-container" onclick="openLightbox('${item.image}')">
+                        <img src="${item.image}" class="card-image" alt="${item.title}">
                     </div>
                 `;
             }
-
+            
             card.innerHTML = `
-                <img src="${item.image}" alt="${item.title}" class="card-image" onclick="openLightbox('${item.image}')">
-                <div class="card-body">
-                    <span class="card-category">${getCategoryLabel(item.category)}</span>
-                    <h3 class="card-title">${item.title}</h3>
-                    <div class="card-date">${item.date}</div>
+                ${imageHTML}
+                <div class="card-content">
+                    <span class="card-category">${getCategoryEmoji(item.type)} ${getCategoryName(item.type)}</span>
+                    <h2 class="card-title">${item.title}</h2>
+                    <div class="card-date">📅 ${item.date}</div>
                     <p class="card-description">${item.description}</p>
-                    ${comparisonHTML}
                 </div>
             `;
-
+            
             return card;
         }
 
-        // Get category label
-        function getCategoryLabel(category) {
-            const labels = {
-                'thoughts': 'Thoughts',
-                'ai-art': 'AI Art',
-                'comparisons': 'Comparisons',
-                'diy': 'DIY Projects'
-            };
-            return labels[category] || category;
+        // Handle comparison slider
+        function handleComparison(e, container) {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const width = rect.width;
+            const percentage = (x / width) * 100;
+            
+            container.querySelector('.comparison-after').style.width = `${percentage}%`;
+            container.querySelector('.comparison-slider').style.left = `${percentage}%`;
         }
 
-        // Filter content
-        function filterContent(category) {
-            currentFilter = category;
+        // Get category emoji
+        function getCategoryEmoji(type) {
+            const emojis = {
+                'thought': '💭',
+                'ai-art': '🎨',
+                'comparison': '🔄',
+                'diy': '🔧'
+            };
+            return emojis[type] || '📝';
+        }
+
+        // Get category name
+        function getCategoryName(type) {
+            const names = {
+                'thought': 'Thought',
+                'ai-art': 'AI Art',
+                'comparison': 'Comparison',
+                'diy': 'DIY Project'
+            };
+            return names[type] || type;
+        }
+
+        // Filter items
+        function filterItems(type) {
+            currentFilter = type;
             
-            // Update active tab
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.textContent.toLowerCase().includes(category) || 
-                    (category === 'all' && tab.textContent === 'All')) {
-                    tab.classList.add('active');
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter cards
+            document.querySelectorAll('.card').forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
                 }
             });
-
-            renderContent();
         }
 
-        // Open admin panel
-        function openAdminPanel() {
-            document.getElementById('adminModal').classList.add('active');
-            
-            // Load saved GitHub config
-            const config = getGitHubConfig();
-            document.getElementById('githubUsername').value = config.username || '';
-            document.getElementById('repoName').value = config.repo || '';
-            document.getElementById('githubToken').value = config.token || '';
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalCount').textContent = MY_CONTENT.length;
+            document.getElementById('aiArtCount').textContent = 
+                MY_CONTENT.filter(item => item.type === 'ai-art').length;
+            document.getElementById('diyCount').textContent = 
+                MY_CONTENT.filter(item => item.type === 'diy').length;
         }
 
-        // Close admin panel
-        function closeAdminPanel() {
-            document.getElementById('adminModal').classList.remove('active');
-        }
-
-        // Get GitHub configuration
-        function getGitHubConfig() {
-            return {
-                username: localStorage.getItem('githubUsername') || '',
-                repo: localStorage.getItem('repoName') || '',
-                token: localStorage.getItem('githubToken') || ''
-            };
-        }
-
-        // Save GitHub configuration
-        function saveGitHubConfig() {
-            const username = document.getElementById('githubUsername').value;
-            const repo = document.getElementById('repoName').value;
-            const token = document.getElementById('githubToken').value;
-
-            localStorage.setItem('githubUsername', username);
-            localStorage.setItem('repoName', repo);
-            localStorage.setItem('githubToken', token);
-
-            showToast('Configuration saved successfully!', 'success');
-        }
-
-        // Add new content
-        async function addContent() {
-            const title = document.getElementById('contentTitle').value;
-            const category = document.getElementById('contentCategory').value;
-            const image = document.getElementById('contentImage').value;
-            const description = document.getElementById('contentDescription').value;
-
-            if (!title || !image || !description) {
-                showToast('Please fill all required fields', 'error');
-                return;
-            }
-
-            const newContent = {
-                id: Date.now(),
-                title,
-                category,
-                image,
-                description,
-                date: new Date().toLocaleDateString()
-            };
-
-            // Add comparison images if category is comparisons
-            if (category === 'comparisons') {
-                const beforeImage = document.getElementById('beforeImage').value;
-                const afterImage = document.getElementById('afterImage').value;
-                if (beforeImage && afterImage) {
-                    newContent.beforeImage = beforeImage;
-                    newContent.afterImage = afterImage;
-                }
-            }
-
-            contentData.unshift(newContent);
-            localStorage.setItem('siteContent', JSON.stringify(contentData));
-
-            // Try to save to GitHub
-            const config = getGitHubConfig();
-            if (config.username && config.repo && config.token) {
-                await saveToGitHub(contentData);
-            }
-
-            renderContent();
-            clearForm();
-            closeAdminPanel();
-            showToast('Content added successfully!', 'success');
-        }
-
-        // Save to GitHub
-        async function saveToGitHub(data) {
-            const config = getGitHubConfig();
-            const content = btoa(JSON.stringify({ posts: data }, null, 2));
-
-            try {
-                // First, try to get the file to get its SHA
-                let sha = '';
-                const getResponse = await fetch(
-                    `https://api.github.com/repos/${config.username}/${config.repo}/contents/data.json`,
-                    {
-                        headers: {
-                            'Authorization': `token ${config.token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-
-                if (getResponse.ok) {
-                    const fileData = await getResponse.json();
-                    sha = fileData.sha;
-                }
-
-                // Update or create the file
-                const response = await fetch(
-                    `https://api.github.com/repos/${config.username}/${config.repo}/contents/data.json`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${config.token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: 'Update content',
-                            content: content,
-                            sha: sha || undefined
-                        })
-                    }
-                );
-
-                if (!response.ok) {
-                    console.error('Failed to save to GitHub');
-                }
-            } catch (error) {
-                console.error('Error saving to GitHub:', error);
-            }
-        }
-
-        // Clear form
-        function clearForm() {
-            document.getElementById('contentTitle').value = '';
-            document.getElementById('contentCategory').value = 'thoughts';
-            document.getElementById('contentImage').value = '';
-            document.getElementById('contentDescription').value = '';
-            document.getElementById('beforeImage').value = '';
-            document.getElementById('afterImage').value = '';
-        }
-
-        // Open lightbox
+        // Lightbox functionality
         function openLightbox(imageSrc) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImage = document.getElementById('lightboxImage');
-            lightboxImage.src = imageSrc;
-            lightbox.classList.add('active');
+            document.getElementById('lightboxImg').src = imageSrc;
+            document.getElementById('lightbox').classList.add('active');
         }
 
-        // Close lightbox
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Close modals on escape key
+        // Close lightbox with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeAdminPanel();
                 closeLightbox();
             }
         });
