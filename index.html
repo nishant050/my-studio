@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>My Studio — Thoughts, AI, Comparisons, DIY</title>
+  <meta name="description" content="A dynamic single-page studio for thoughts, AI creations, comparisons, and DIY projects." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --panel: rgba(255,255,255,0.06);
+      --panel-strong: rgba(255,255,255,0.12);
+      --text: #e8ecf1;
+      --muted: #a9b3be;
+      --accent: #7c5cff;
+      --accent-2: #00e0ad;
+      --ring: rgba(124,92,255,0.45);
+      --card-radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --grid-gap: 16px;
+      --maxw: 1100px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb; --panel: rgba(0,0,0,0.04); --panel-strong: rgba(0,0,0,0.06);
+        --text:#1a232e; --muted:#5a6674; --ring: rgba(124,92,255,0.25); --shadow: 0 10px 26px rgba(0,0,0,0.08);
+      }
+    }
+    html,body{margin:0;padding:0;height:100%}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background: radial-gradient(80rem 60rem at -10% -10%, #22283a 0, transparent 35%),
+                 radial-gradient(70rem 50rem at 110% -20%, #1d2736 0, transparent 30%),
+                 linear-gradient(180deg, #0b0f14 0%, #0f141b 100%);
+      min-height:100%;
+    }
+    .container{max-width:var(--maxw); margin:0 auto; padding:20px}
+    .site-header{
+      position:sticky; top:0; z-index:100;
+      backdrop-filter: saturate(1.1) blur(12px);
+      background: linear-gradient(180deg, rgba(10,12,18,0.75), rgba(10,12,18,0.35) 60%, transparent);
+      border-bottom:1px solid var(--panel);
+    }
+    .header-inner{display:flex; align-items:center; gap:14px; padding:14px 20px}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: conic-gradient(from 210deg, var(--accent), var(--accent-2), var(--accent), var(--accent-2));
+      box-shadow:0 8px 20px rgba(124,92,255,0.5), inset 0 0 24px rgba(0,0,0,0.25);
+    }
+    .brand h1{font-size:18px; margin:0}
+    .brand small{color:var(--muted); display:block; font-weight:500}
+    .spacer{flex:1}
+    .actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .search{
+      position:relative; min-width:220px;
+    }
+    .search input{
+      width:100%; padding:10px 12px 10px 36px; border-radius:12px; border:1px solid var(--panel);
+      background: rgba(255,255,255,0.04); color:var(--text); outline:none;
+      transition:.2s border-color, .2s box-shadow;
+    }
+    .search input:focus{border-color:var(--ring); box-shadow:0 0 0 6px var(--ring)}
+    .search svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.7}
+    .btn{
+      border:1px solid var(--panel); background: rgba(255,255,255,0.04);
+      color:var(--text); padding:10px 12px; border-radius:12px; cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px; transition:.2s transform,.2s background;
+    }
+    .btn:hover{transform:translateY(-1px); background: rgba(255,255,255,0.06)}
+    .btn-primary{border-color:transparent; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:white}
+    .menu{position:relative}
+    .dropdown{
+      position:absolute; top:110%; right:0; background: rgba(15,18,26,0.95);
+      border:1px solid var(--panel-strong); border-radius:14px; padding:8px;
+      box-shadow: var(--shadow); display:none; min-width:220px;
+    }
+    .dropdown a{
+      display:flex; align-items:center; gap:8px; padding:10px 10px; color:var(--text); text-decoration:none; border-radius:10px;
+    }
+    .dropdown a:hover{background: rgba(255,255,255,0.06)}
+    .menu.open .dropdown{display:block}
+    .nav{
+      display:flex; gap:8px; padding:6px 20px 18px; flex-wrap:wrap;
+    }
+    .chip{
+      padding:8px 12px; border-radius:999px; border:1px solid var(--panel); cursor:pointer;
+      color:var(--muted); background: rgba(255,255,255,0.02); transition:.2s all;
+    }
+    .chip.active{color:white; border-color:var(--ring); box-shadow:0 0 0 5px var(--ring); background: rgba(124,92,255,0.12)}
+    .hero{
+      padding:28px 20px 10px; display:flex; flex-direction:column; gap:8px;
+    }
+    .hero h2{margin:0; font-size:28px}
+    .hero p{margin:0; color:var(--muted)}
+    .grid{
+      column-count: 1;
+      column-gap: var(--grid-gap);
+      padding: 10px 20px 60px;
+    }
+    @media (min-width:640px){ .grid{ column-count: 2; } }
+    @media (min-width:1000px){ .grid{ column-count: 3; } }
+    .card{
+      break-inside: avoid; border-radius: var(--card-radius);
+      border:1px solid var(--panel-strong); background: rgba(255,255,255,0.05);
+      margin: 0 0 var(--grid-gap); box-shadow: var(--shadow); overflow:hidden;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .card:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+    .card .thumb img{ display:block; width:100%; height:auto; }
+    .meta, .content{ padding:14px 14px 10px; }
+    .title{ margin:0 0 6px; font-size:18px }
+    .muted{ color:var(--muted) }
+    .labels{ display:flex; gap:6px; flex-wrap:wrap; font-size:12px; margin:6px 0 0 }
+    .label{ padding:4px 8px; border-radius:999px; border:1px solid var(--panel); background: rgba(255,255,255,0.03) }
+    .actions-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding: 0 14px 14px }
+    .link{ color: var(--accent-2); text-decoration: none }
+    .link:hover{ text-decoration: underline }
+    .skeleton{ animation: pulse 1.2s infinite ease-in-out; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.12), rgba(255,255,255,0.06)); background-size: 200% 100%; }
+    @keyframes pulse { 0%{background-position: 200% 0} 100%{background-position: -200% 0} }
+    .empty{
+      text-align:center; color:var(--muted); padding:40px 0 90px
+    }
+    /* Lightbox */
+    .lightbox{
+      position: fixed; inset: 0; display:none; align-items:center; justify-content:center;
+      background: rgba(0,0,0,0.75); z-index: 200;
+    }
+    .lightbox.open{ display:flex }
+    .lightbox img{ max-width: 92vw; max-height: 86vh; border-radius:14px; box-shadow: var(--shadow); }
+    .lightbox .close{ position:absolute; top:20px; right:20px; }
+    /* Before/After slider */
+    .compare{
+      position:relative; overflow:hidden; background:#0f1219;
+    }
+    .compare img{ display:block; width:100%; height:auto; user-select:none; pointer-events:none }
+    .compare .top{ position:absolute; inset:0; overflow:hidden }
+    .compare .top img{ position:absolute; left:0; top:0; }
+    .compare .slider{
+      -webkit-appearance: none; appearance: none; position:absolute; inset:0; width:100%; height:100%; background:transparent; outline:none; cursor:ew-resize;
+    }
+    .compare .handle{
+      position:absolute; top:0; bottom:0; width:2px; background:white; left:50%;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+    }
+    .compare .knob{
+      position:absolute; left:50%; top:50%; transform: translate(-50%,-50%); width:36px; height:36px; border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); border:2px solid white;
+      display:flex; align-items:center; justify-content:center; color:white; font-weight:700; box-shadow: var(--shadow);
+    }
+    footer{
+      padding:30px 20px 60px; text-align:center; color:var(--muted)
+    }
+    .theme-toggle{ width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border-radius:12px }
+    .note{ color:var(--muted); font-size:12px; padding: 0 20px 10px }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="brand" href="#">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1 id="siteTitle">My Studio</h1>
+          <small id="siteTagline">Thoughts • AI • Comparisons • DIY</small>
+        </div>
+      </a>
+      <div class="spacer"></div>
+
+      <nav class="nav" id="nav"></nav>
+
+      <div class="spacer"></div>
+
+      <div class="actions">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input id="search" type="search" placeholder="Search..." />
+        </div>
+
+        <div class="menu" id="addMenu">
+          <button class="btn btn-primary" id="addBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Add
+          </button>
+          <div class="dropdown" id="addDropdown">
+            <a id="addThought" target="_blank" rel="noopener">
+              📝 New Thought
+            </a>
+            <a id="addCreation" target="_blank" rel="noopener">
+              🎨 New AI Creation
+            </a>
+            <a id="addComparison" target="_blank" rel="noopener">
+              🔁 New Comparison (Before / After)
+            </a>
+            <a id="addDIY" target="_blank" rel="noopener">
+              🛠️ New DIY Project
+            </a>
+          </div>
+        </div>
+
+        <button id="themeToggle" class="btn theme-toggle" title="Toggle theme">
+          🌓
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="container hero">
+    <h2 id="heroTitle">Welcome to My Studio</h2>
+    <p id="heroText">A living page for ideas, experiments, and builds.</p>
+    <div class="note">
+      Tip: Use the “Add” button (top-right) to create posts via GitHub’s web UI. The site updates instantly.
+    </div>
+  </section>
+
+  <main class="grid container" id="grid" aria-live="polite">
+    <!-- cards injected here -->
+  </main>
+
+  <div class="empty container" id="empty" style="display:none">No posts found. Try another filter or add your first one!</div>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="btn close" id="lightboxClose" aria-label="Close">✕</button>
+    <img id="lightboxImg" alt="Full view"/>
+  </div>
+
+  <footer>
+    <div id="footerText">© <span id="year"></span> My Studio. Powered by GitHub Pages + Issues.</div>
+  </footer>
+
+  <!-- Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+
+  <script>
+    // =======================
+    // CONFIG — edit me
+    // =======================
+    const CONFIG = {
+      owner: "YOUR_GITHUB_USERNAME",
+      repo: "YOUR_REPO_NAME",
+      siteTitle: "My Studio",
+      siteTagline: "Thoughts • AI • Comparisons • DIY",
+      heroTitle: "Welcome to My Studio",
+      heroText: "A living page for ideas, experiments, and builds.",
+      accent: "#7c5cff",
+      accent2: "#00e0ad",
+      defaultFilter: "all", // all | thought | creation | comparison | diy
+    };
+    // =======================
+
+    // Apply config text/colors
+    document.getElementById("siteTitle").textContent = CONFIG.siteTitle;
+    document.getElementById("siteTagline").textContent = CONFIG.siteTagline;
+    document.getElementById("heroTitle").textContent = CONFIG.heroTitle;
+    document.getElementById("heroText").textContent = CONFIG.heroText;
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.documentElement.style.setProperty("--accent", CONFIG.accent);
+    document.documentElement.style.setProperty("--accent-2", CONFIG.accent2);
+
+    // Category mapping
+    const CATEGORY = {
+      thought: "thought",
+      creation: "creation",
+      comparison: "comparison",
+      diy: "diy"
+    };
+    const ALL_CATS = ["all", ...Object.values(CATEGORY)];
+
+    // Day.js
+    dayjs.extend(window.dayjs_plugin_relativeTime);
+
+    // State
+    const state = {
+      posts: [],
+      filtered: [],
+      filter: CONFIG.defaultFilter || "all",
+      query: ""
+    };
+
+    // UI refs
+    const grid = document.getElementById("grid");
+    const empty = document.getElementById("empty");
+    const search = document.getElementById("search");
+    const nav = document.getElementById("nav");
+    const addMenu = document.getElementById("addMenu");
+    const addBtn = document.getElementById("addBtn");
+    const addDropdown = document.getElementById("addDropdown");
+    const themeToggle = document.getElementById("themeToggle");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    // Build nav chips
+    function buildNav(){
+      nav.innerHTML = "";
+      ALL_CATS.forEach(cat => {
+        const chip = document.createElement("button");
+        chip.className = "chip" + (state.filter === cat ? " active" : "");
+        chip.textContent = cat === "all" ? "All" : capitalize(cat);
+        chip.dataset.cat = cat;
+        chip.addEventListener("click", () => {
+          state.filter = cat;
+          updateHash();
+          applyFilters();
+        });
+        nav.appendChild(chip);
+      });
+    }
+
+    function updateHash(){
+      const params = new URLSearchParams();
+      if(state.filter && state.filter !== "all") params.set("cat", state.filter);
+      if(state.query) params.set("q", state.query);
+      const hash = params.toString();
+      if(hash) location.hash = "#" + hash;
+      else history.replaceState(null, "", location.pathname);
+    }
+    function readHash(){
+      const h = location.hash.replace(/^#/, "");
+      const params = new URLSearchParams(h);
+      const cat = params.get("cat");
+      const q = params.get("q");
+      state.filter = cat && ALL_CATS.includes(cat) ? cat : "all";
+      state.query = q || "";
+      search.value = state.query;
+    }
+    window.addEventListener("hashchange", () => {
+      readHash();
+      highlightNav();
+      applyFilters();
+    });
+
+    function highlightNav(){
+      [...nav.querySelectorAll(".chip")].forEach(el => {
+        el.classList.toggle("active", el.dataset.cat === state.filter);
+      });
+    }
+
+    // Add menu links
+    function initAddMenu(){
+      const base = `https://github.com/${CONFIG.owner}/${CONFIG.repo}/issues/new`;
+      document.getElementById("addThought").href    = `${base}?template=thought.yml&labels=thought`;
+      document.getElementById("addCreation").href   = `${base}?template=creation.yml&labels=creation`;
+      document.getElementById("addComparison").href = `${base}?template=comparison.yml&labels=comparison`;
+      document.getElementById("addDIY").href        = `${base}?template=diy.yml&labels=diy`;
+      addBtn.addEventListener("click", () => addMenu.classList.toggle("open"));
+      document.addEventListener("click", (e) => {
+        if(!addMenu.contains(e.target)) addMenu.classList.remove("open");
+      });
+    }
+
+    // Theme toggle (simple)
+    themeToggle.addEventListener("click", () => {
+      document.documentElement.classList.toggle("light");
+    });
+
+    // Search
+    search.addEventListener("input", () => {
+      state.query = search.value.trim();
+      updateHash();
+      applyFilters();
+    });
+
+    // Lightbox
+    function openLightbox(src){
+      lightboxImg.src = src;
+      lightbox.classList.add("open");
+    }
+    function closeLightbox(){
+      lightbox.classList.remove("open");
+      lightboxImg.src = "";
+    }
+    lightbox.addEventListener("click", (e) => {
+      if(e.target === lightbox || e.target === lightboxClose) closeLightbox();
+    });
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeLightbox();
+    });
+
+    // Fetch issues
+    async function fetchIssues(){
+      const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/issues?state=open&per_page=100`;
+      const res = await fetch(url, { headers: { "Accept":"application/vnd.github+json" }});
+      if(res.status === 403){
+        throw new Error("GitHub API rate limit reached. Try again later.");
+      }
+      if(!res.ok){
+        throw new Error("Failed to load content.");
+      }
+      const issues = await res.json();
+      // Filter out PRs and drafts
+      const posts = issues
+        .filter(it => !it.pull_request)
+        .filter(it => !(it.labels || []).some(l => l.name.toLowerCase() === "draft"))
+        .map(toPost);
+
+      // Sort: pinned first, then newest
+      posts.sort((a,b) => {
+        const ap = a.labels.includes("pinned") ? 0 : 1;
+        const bp = b.labels.includes("pinned") ? 0 : 1;
+        if(ap !== bp) return ap - bp;
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+
+      return posts;
+    }
+
+    function toPost(issue){
+      const labels = (issue.labels || []).map(l => (typeof l === "string" ? l : l.name).toLowerCase());
+      const type = labels.find(l => Object.values(CATEGORY).includes(l)) || "thought";
+      const images = extractMarkdownImages(issue.body || "");
+      const plain = stripMarkdown(issue.body || "");
+      return {
+        id: issue.id,
+        number: issue.number,
+        url: issue.html_url,
+        title: issue.title || "(untitled)",
+        body: issue.body || "",
+        labels,
+        type,
+        images,
+        created_at: issue.created_at,
+        updated_at: issue.updated_at,
+        author: issue.user && issue.user.login
+      };
+    }
+
+    function extractMarkdownImages(md){
+      const regex = /!\[[^\]]*\]\((<)?(.*?)(>)?(?:(\s+["'][^"']*["']))?\)/g;
+      const urls = [];
+      let m;
+      while((m = regex.exec(md)) !== null){
+        const url = (m[2] || "").trim();
+        if(url) urls.push(url.replace(/^<|>$/g, ""));
+      }
+      return urls;
+    }
+
+    function stripMarkdown(md){
+      return md
+        .replace(/```[\s\S]*?```/g, "")
+        .replace(/`[^`]*`/g, "")
+        .replace(/!\[[^\]]*\]\([^\)]*\)/g, "")
+        .replace(/\[[^\]]*\]\([^\)]*\)/g, "")
+        .replace(/[#>*_~`-]{1,}/g, " ")
+        .replace(/\n{2,}/g, "\n")
+        .trim();
+    }
+
+    // Render
+    function render(posts){
+      grid.innerHTML = "";
+      if(!posts.length){
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+
+      for(const post of posts){
+        const card = document.createElement("article");
+        card.className = "card";
+        card.setAttribute("data-type", post.type);
+        card.setAttribute("data-id", post.id);
+
+        // Thumb / special layouts
+        let thumbHTML = "";
+        if(post.type === "creation" && post.images.length){
+          thumbHTML = `<div class="thumb">${imageGrid(post.images)}</div>`;
+        } else if(post.type === "comparison" && post.images.length >= 2){
+          thumbHTML = `<div class="thumb">${compareHTML(post.images[0], post.images[1])}</div>`;
+        } else if(post.images.length){
+          thumbHTML = `<div class="thumb"><img loading="lazy" src="${escapeHtml(post.images[0])}" alt=""/></div>`;
+        }
+
+        const metaHTML = `
+          <div class="meta">
+            <h3 class="title">${escapeHtml(post.title)}</h3>
+            <div class="muted">${capitalize(post.type)} • ${dayjs(post.created_at).fromNow()}${post.labels.includes("pinned") ? " • 📌 Pinned" : ""}</div>
+            <div class="labels">${post.labels.filter(l => !["thought","creation","comparison","diy"].includes(l)).map(l => `<span class="label">${escapeHtml(l)}</span>`).join("")}</div>
+          </div>
+        `;
+
+        const bodyHTML = `
+          <div class="content">
+            ${renderMarkdown(truncateMarkdown(post.body, post.type))}
+          </div>
+        `;
+
+        const actionsHTML = `
+          <div class="actions-row">
+            <a class="link" href="${post.url}" target="_blank" rel="noopener">Open on GitHub</a>
+            <span class="muted">#${post.number}</span>
+          </div>
+        `;
+
+        card.innerHTML = `${thumbHTML}${metaHTML}${bodyHTML}${actionsHTML}`;
+        enhanceCard(card, post);
+        grid.appendChild(card);
+      }
+    }
+
+    function imageGrid(urls){
+      const firstFour = urls.slice(0,4);
+      const extra = urls.length - firstFour.length;
+      const grid = firstFour.map((u, i) => {
+        const overlay = i === 3 && extra > 0 ? `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.45); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:22px;">+${extra}</div>` : "";
+        return `<div style="position:relative; overflow:hidden; border-bottom:${i<2?'1px solid var(--panel)':'0'}; border-right:${i%2===0?'1px solid var(--panel)':'0'}">
+          <img loading="lazy" src="${escapeHtml(u)}" alt=""/>
+          ${overlay}
+        </div>`;
+      }).join("");
+      return `
+        <div style="display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr">
+          ${grid}
+        </div>
+      `;
+    }
+
+    function compareHTML(left, right){
+      // container; JS will attach slider behavior
+      return `
+        <div class="compare" data-left="${escapeHtml(left)}" data-right="${escapeHtml(right)}">
+          <img src="${escapeHtml(left)}" alt="Before"/>
+          <div class="top">
+            <img src="${escapeHtml(right)}" alt="After"/>
+          </div>
+          <input class="slider" type="range" min="0" max="100" value="50" aria-label="Comparison slider"/>
+          <div class="handle" style="left:50%"></div>
+          <div class="knob">↔</div>
+        </div>
+      `;
+    }
+
+    function enhanceCard(card, post){
+      // Lightbox for images
+      card.querySelectorAll(".thumb img").forEach(img => {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => openLightbox(img.src));
+      });
+      // Comparison slider
+      const cmp = card.querySelector(".compare");
+      if(cmp){
+        const base = cmp.querySelector("img");
+        const topWrap = cmp.querySelector(".top");
+        const topImg = topWrap.querySelector("img");
+        const slider = cmp.querySelector(".slider");
+        const handle = cmp.querySelector(".handle");
+        const knob = cmp.querySelector(".knob");
+        function position(pct){
+          topWrap.style.clipPath = `inset(0 ${100-pct}% 0 0)`;
+          handle.style.left = pct + "%";
+          knob.style.left = pct + "%";
+        }
+        position(50);
+        let dragging = false;
+        const setFromClientX = (clientX) => {
+          const rect = cmp.getBoundingClientRect();
+          let pct = Math.round(((clientX - rect.left) / rect.width) * 100);
+          pct = Math.max(0, Math.min(100, pct));
+          slider.value = pct;
+          position(pct);
+        };
+        slider.addEventListener("input", () => position(+slider.value));
+        cmp.addEventListener("pointerdown", (e) => { dragging = true; cmp.setPointerCapture(e.pointerId); setFromClientX(e.clientX); });
+        cmp.addEventListener("pointermove", (e) => { if(dragging) setFromClientX(e.clientX); });
+        cmp.addEventListener("pointerup", (e) => { dragging = false; cmp.releasePointerCapture(e.pointerId); });
+        window.addEventListener("resize", () => position(+slider.value));
+      }
+    }
+
+    function truncateMarkdown(md, type){
+      // For DIY/thought: keep more text; for creation/comparison: shorter text
+      const limit = type === "diy" ? 1400 : (type === "thought" ? 800 : 400);
+      if(md.length <= limit) return md;
+      return md.slice(0, limit) + "\n\n…";
+    }
+
+    function renderMarkdown(md){
+      const html = marked.parse(md, { mangle:false, headerIds:false });
+      return DOMPurify.sanitize(html);
+    }
+
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;'}[c]));
+    }
+
+    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    function applyFilters(){
+      const q = (state.query || "").toLowerCase();
+      state.filtered = state.posts.filter(p => {
+        const catOk = state.filter === "all" ? true : p.type === state.filter;
+        if(!catOk) return false;
+        if(!q) return true;
+        const hay = [p.title, p.body, p.labels.join(" ")].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+      render(state.filtered);
+    }
+
+    async function init(){
+      buildNav();
+      initAddMenu();
+      readHash();
+      highlightNav();
+      // skeleton
+      for(let i=0;i<6;i++){
+        const sk = document.createElement("div");
+        sk.className = "card skeleton";
+        sk.style.height = (220 + Math.random()*200|0) + "px";
+        grid.appendChild(sk);
+      }
+      try{
+        state.posts = await fetchIssues();
+      }catch(err){
+        grid.innerHTML = `<div class="empty">${escapeHtml(err.message)}<br/><br/>Make sure your repo is public and has some open issues.</div>`;
+        return;
+      }
+      applyFilters();
+    }
+
+    init();
+  </script>
+</body>
+</html>
